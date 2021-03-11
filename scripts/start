@@ -7,7 +7,7 @@
 #
 
 _start() {
-  if ! npm start --prefix ./app; then
+  if ! npm start; then
     @go.log ERROR "Failed to start App"
     return 2
   else
