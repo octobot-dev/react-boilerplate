@@ -25,3 +25,7 @@ Tests can also run with the following commands in `/app`:
 
 - `npm run test` will run tests until either all tests pass or the first one fails. Test execution will stop after the first failure. This is the command executed when running `./go test` in the project's root folder.
 - `npm run test-dev` will run all tests and will not stop when a test fails.
+
+## Storybook
+
+The project uses storybook to make UI development easier. Once you run ./go start you should be able to see Storybook's Dashboard under <http://localhost:6006> . There you can preview and test your UI components.
