@@ -123,6 +123,7 @@
     "compare-versions": "3.4.0",
     "compression-webpack-plugin": "2.0.0",
     "concurrently": "^6.0.0",
+    "core-js": "^3.9.1",
     "coveralls": "3.0.3",
     "css-loader": "2.1.1",
     "eslint": "5.16.0",
