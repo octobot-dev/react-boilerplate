@@ -1,29 +1,28 @@
 /**
  * Create the store with dynamic reducers
  */
+/* istanbul ignore file */
 
-import { createStore, applyMiddleware, compose } from 'redux';
+import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
+
 import { routerMiddleware } from 'connected-react-router';
 import createSagaMiddleware from 'redux-saga';
 import createReducer from './reducers';
+import sagas from './sagas';
 
-export default function configureStore(initialState = {}, history) {
-  let composeEnhancers = compose;
-  const reduxSagaMonitorOptions = {};
+export default function configureAppStore(initialState = {}, history) {
+  let reduxSagaMonitorOptions = {};
 
   // If Redux Dev Tools and Saga Dev Tools Extensions are installed, enable them
   /* istanbul ignore next */
   if (process.env.NODE_ENV !== 'production' && typeof window === 'object') {
     /* eslint-disable no-underscore-dangle */
-    if (window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__)
-      composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({});
-
     // NOTE: Uncomment the code below to restore support for Redux Saga
     // Dev Tools once it supports redux-saga version 1.x.x
-    // if (window.__SAGA_MONITOR_EXTENSION__)
-    //   reduxSagaMonitorOptions = {
-    //     sagaMonitor: window.__SAGA_MONITOR_EXTENSION__,
-    //   };
+    if (window.__SAGA_MONITOR_EXTENSION__)
+      reduxSagaMonitorOptions = {
+        sagaMonitor: window.__SAGA_MONITOR_EXTENSION__,
+      };
     /* eslint-enable */
   }
 
@@ -34,16 +33,15 @@ export default function configureStore(initialState = {}, history) {
   // 2. routerMiddleware: Syncs the location/URL path to the state
   const middlewares = [sagaMiddleware, routerMiddleware(history)];
 
-  const enhancers = [applyMiddleware(...middlewares)];
+  const store = configureStore({
+    reducer: createReducer(),
+    preloadedState: initialState,
+    middleware: [...getDefaultMiddleware(), ...middlewares],
+  });
 
-  const store = createStore(
-    createReducer(),
-    initialState,
-    composeEnhancers(...enhancers),
-  );
+  sagaMiddleware.run(sagas);
 
   // Extensions
-  store.runSaga = sagaMiddleware.run;
   store.injectedReducers = {}; // Reducer registry
   store.injectedSagas = {}; // Saga registry
 
