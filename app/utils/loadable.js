@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import React, { lazy, Suspense } from 'react';
 
 const loadable = (importFunc, { fallback = null } = { fallback: null }) => {

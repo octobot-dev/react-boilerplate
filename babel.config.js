@@ -4,13 +4,14 @@ module.exports = {
       '@babel/preset-env',
       {
         modules: false,
+        loose: true,
       },
     ],
     '@babel/preset-react',
   ],
   plugins: [
     'styled-components',
-    '@babel/plugin-proposal-class-properties',
+    ['@babel/plugin-proposal-class-properties', { loose: true }],
     '@babel/plugin-syntax-dynamic-import',
   ],
   env: {
